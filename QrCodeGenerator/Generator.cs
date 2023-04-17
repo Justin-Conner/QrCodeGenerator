@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using MySqlConnector;
 using System.Drawing;
 using System.Drawing.Imaging;
 using ZXing;
@@ -8,7 +9,7 @@ namespace QrCodeGenerator
 {
     public class Generator
     {
-        public static void GenerateQRCode(string content, string filePath)
+        public static void GenerateQRCode(string content, string fileName, string connectionString)
         {
             var qrWriter = new BarcodeWriterPixelData
             {
@@ -33,8 +34,19 @@ namespace QrCodeGenerator
                 bitmap.UnlockBits(bitmapData);
             }
 
-            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            bitmap.Save($@"{desktopPath}\{filePath}", ImageFormat.Png);
+            using var ms = new MemoryStream();
+            bitmap.Save(ms, ImageFormat.Png);
+            var imageBytes = ms.ToArray();
+
+            
+
+            using var connection = new MySqlConnection($"server=localhost;database=qrcodes;user=qrcodes;password=qrcodes;");
+            connection.Open();
+
+            using var command = new MySqlCommand("INSERT INTO qrcodes (filename, content) VALUES (@fileName, @content)", connection);
+            command.Parameters.AddWithValue("@fileName", fileName);
+            command.Parameters.AddWithValue("@content", imageBytes);
+            command.ExecuteNonQuery();
         }
     }
 }

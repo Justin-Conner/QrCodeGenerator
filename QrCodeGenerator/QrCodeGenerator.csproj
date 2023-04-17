@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.32.1" />
+    <PackageReference Include="MySQL.Data.Entities" Version="6.8.3" />
+    <PackageReference Include="MySqlConnector" Version="2.2.5" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
