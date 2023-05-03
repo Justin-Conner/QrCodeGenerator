@@ -1,5 +1,4 @@
 using System;
-using MySqlConnector;
 using Org.BouncyCastle.Utilities;
 using System.Drawing;
 using System.Drawing.Imaging;
